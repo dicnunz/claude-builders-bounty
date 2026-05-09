@@ -17,7 +17,11 @@ LOG_PATH = Path.home() / ".claude" / "hooks" / "blocked.log"
 BLOCKERS: list[tuple[str, re.Pattern[str], str]] = [
     (
         "rm -rf",
-        re.compile(r"(^|[;&|]\s*)rm\s+-[^\n;|&]*r[^\n;|&]*f\b"),
+        re.compile(
+            r"(^|[;&|]\s*)(?:sudo\s+)?rm\s+"
+            r"(?=[^\n;|&]*(?:-[^\n;|&]*r|--recursive\b))"
+            r"(?=[^\n;|&]*(?:-[^\n;|&]*f|--force\b))[^\n;|&]*"
+        ),
         "recursive force delete can remove large parts of the filesystem",
     ),
     (

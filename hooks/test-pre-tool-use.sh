@@ -23,6 +23,9 @@ assert_decision() {
 python3 -m py_compile "$hook"
 
 assert_decision "rm -rf build" "deny"
+assert_decision "rm -fr build" "deny"
+assert_decision "sudo rm --recursive --force build" "deny"
+assert_decision "rm -r build" "allow"
 assert_decision "DROP TABLE users" "deny"
 assert_decision "git push --force origin main" "deny"
 assert_decision "TRUNCATE users" "deny"
