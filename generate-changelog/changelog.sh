@@ -54,12 +54,13 @@ categorize() {
   local subject="$1"
   local lower
   lower="$(printf '%s' "$subject" | tr '[:upper:]' '[:lower:]')"
+  lower="$(printf '%s' "$lower" | sed -E 's/^([a-z]+)(\([^)]+\))?!:/\1:/')"
 
   case "$lower" in
-    feat:*|feat\(*|feature:*|add:*|added:*|new:*) echo "added" ;;
-    fix:*|fix\(*|bug:*|bugfix:*|repair:*|hotfix:*) echo "fixed" ;;
+    feat:*|feature:*|add:*|added:*|new:*) echo "added" ;;
+    fix:*|bug:*|bugfix:*|repair:*|hotfix:*) echo "fixed" ;;
     remove:*|removed:*|delete:*|deleted:*|drop:*|dropped:*) echo "removed" ;;
-    change:*|changed:*|refactor:*|refactor\(*|perf:*|docs:*|doc:*|style:*|test:*|build:*|ci:*|chore:*) echo "changed" ;;
+    change:*|changed:*|refactor:*|perf:*|docs:*|doc:*|style:*|test:*|build:*|ci:*|chore:*) echo "changed" ;;
     *) echo "changed" ;;
   esac
 }

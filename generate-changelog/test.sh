@@ -28,11 +28,28 @@ cp "$repo_root/generate-changelog/changelog.sh" "$tmp/generate-changelog/changel
   git add file.txt
   git commit -qm "remove: old path"
 
+  echo "four" >> file.txt
+  git add file.txt
+  git commit -qm "feat(api)!: scoped breaking feature"
+
+  echo "five" >> file.txt
+  git add file.txt
+  git commit -qm "fix(core): scoped bug fix"
+
+  echo "six" >> file.txt
+  git add file.txt
+  git commit -qm "docs(readme): scoped docs update"
+
   bash ./changelog.sh OUT.md >/dev/null
 
   grep -q "Generated from git history since v0.1.0" OUT.md
+  grep -q "### Added" OUT.md
+  grep -q "scoped breaking feature" OUT.md
   grep -q "### Fixed" OUT.md
   grep -q "repair output" OUT.md
+  grep -q "scoped bug fix" OUT.md
+  grep -q "### Changed" OUT.md
+  grep -q "scoped docs update" OUT.md
   grep -q "### Removed" OUT.md
   grep -q "old path" OUT.md
   if grep -q "initial feature" OUT.md; then
